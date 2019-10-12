@@ -47,4 +47,6 @@ RAW_ENABLE = yes
 DYNAMIC_KEYMAP_ENABLE = yes
 CIE1931_CURVE = yes
 
-LAYOUTS = 60_ansi 60_iso 60_hhkb 60_ansi_split_bs_rshift
+#LAYOUTS = 60_ansi 60_iso 60_hhkb 60_ansi_split_bs_rshift
+
+VIA_ENABLE = yes

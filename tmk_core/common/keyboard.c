@@ -81,6 +81,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifdef VELOCIKEY_ENABLE
 #    include "velocikey.h"
 #endif
+#ifdef VIA_ENABLE
+#   include "via.h"
+#endif
 
 #ifdef MATRIX_HAS_GHOST
 extern const uint16_t keymaps[][MATRIX_ROWS][MATRIX_COLS];
@@ -195,6 +198,9 @@ __attribute__((weak)) bool is_keyboard_master(void) { return true; }
 void keyboard_init(void) {
     timer_init();
     matrix_init();
+#ifdef VIA_ENABLE
+	via_init();
+#endif
 #ifdef QWIIC_ENABLE
     qwiic_init();
 #endif
