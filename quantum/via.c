@@ -109,12 +109,40 @@ void via_init(void)
 	// OK to load from EEPROM.
 	if (via_eeprom_is_valid()) {
 	} else	{
+		// This resets the layout options
+		via_set_layout_options(0);
 		// This resets the keymaps in EEPROM to what is in flash.
 		dynamic_keymap_reset();
 		// This resets the macros in EEPROM to nothing.
 		dynamic_keymap_macro_reset();
 		// Save the magic number last, in case saving was interrupted
 		via_eeprom_set_valid(true);
+	}
+}
+
+// This is generalized so the layout options EEPROM usage can be
+// variable, between 1 and 4 bytes.
+uint32_t via_get_layout_options(void)
+{
+	uint32_t value = 0;
+	// Start at the most significant byte
+	void * source = (void *)(VIA_EEPROM_LAYOUT_OPTIONS_ADDR);
+	for ( uint8_t i = 0; i < VIA_EEPROM_LAYOUT_OPTIONS_SIZE; i++ ) {
+		value = value << 8;
+		value |= eeprom_read_byte(source);
+		source++;
+	}
+	return value;
+}
+
+void via_set_layout_options(uint32_t value)
+{
+	// Start at the least significant byte
+	void * target = (void *)(VIA_EEPROM_LAYOUT_OPTIONS_ADDR+VIA_EEPROM_LAYOUT_OPTIONS_SIZE-1);
+	for ( uint8_t i = 0; i < VIA_EEPROM_LAYOUT_OPTIONS_SIZE; i++ ) {
+		eeprom_update_byte(target, value & 0xFF );
+		value = value >> 8;
+		target--;
 	}
 }
 
@@ -199,6 +227,15 @@ void raw_hid_receive( uint8_t *data, uint8_t length )
 					command_data[4] = value & 0xFF;
 					break;
 				}
+				case id_layout_options:
+				{
+					uint32_t value = via_get_layout_options();
+					command_data[1] = (value >> 24 ) & 0xFF;
+					command_data[2] = (value >> 16 ) & 0xFF;
+					command_data[3] = (value >> 8 ) & 0xFF;
+					command_data[4] = value & 0xFF;
+					break;
+				}
 				default:
 				{
 					raw_hid_receive_kb(data,length);
@@ -209,7 +246,23 @@ void raw_hid_receive( uint8_t *data, uint8_t length )
 		}
 		case id_set_keyboard_value:
 		{
-			raw_hid_receive_kb(data,length);
+			switch ( command_data[0] )
+			{
+				case id_layout_options:
+				{
+					uint32_t value = ( (uint32_t)command_data[1] << 24 ) |
+									 ( (uint32_t)command_data[2] << 16 ) |
+									 ( (uint32_t)command_data[3] << 8 ) |
+									   (uint32_t)command_data[4];
+					via_set_layout_options(value);
+					break;
+				}
+				default:
+				{
+					raw_hid_receive_kb(data,length);
+					break;
+				}
+			}
 			break;
 		}
 		case id_dynamic_keymap_get_keycode:

@@ -20,7 +20,7 @@
 #include "progmem.h"  // to read default from flash
 #include "quantum.h"  // for send_string()
 #include "dynamic_keymap.h"
-#include "via.h" // for default VIA_EEPROM_VERSION_ADDR
+#include "via.h" // for default VIA_EEPROM_ADDR_END
 
 #ifndef DYNAMIC_KEYMAP_LAYER_COUNT
 #   define DYNAMIC_KEYMAP_LAYER_COUNT 4
@@ -31,10 +31,10 @@
 #endif
 
 // If DYNAMIC_KEYMAP_EEPROM_ADDR not explicitly defined in config.h,
-// default it start after VIA_EEPROM_VERSION_ADDR
+// default it start after VIA_EEPROM_ADDR_END
 #ifndef DYNAMIC_KEYMAP_EEPROM_ADDR
-#   ifdef VIA_EEPROM_VERSION_ADDR
-#       define DYNAMIC_KEYMAP_EEPROM_ADDR (VIA_EEPROM_VERSION_ADDR+1)
+#   ifdef VIA_EEPROM_ADDR_END
+#       define DYNAMIC_KEYMAP_EEPROM_ADDR (VIA_EEPROM_ADDR_END+1)
 #   else
 #       error DYNAMIC_KEYMAP_EEPROM_ADDR not defined
 #   endif 

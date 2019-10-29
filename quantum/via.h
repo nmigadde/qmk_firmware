@@ -46,6 +46,19 @@
 
 #define VIA_EEPROM_VERSION_ADDR (VIA_EEPROM_MAGIC_ADDR+2)
 
+#define VIA_EEPROM_LAYOUT_OPTIONS_ADDR (VIA_EEPROM_VERSION_ADDR+1)
+
+// Changing the layout options size after release will invalidate EEPROM,
+// but this is something that should be set correctly on initial implementation.
+// 1 byte is enough for most uses (i.e. 8 binary states, or 6 binary + 1 ternary/quaternary )
+#ifndef VIA_EEPROM_LAYOUT_OPTIONS_SIZE
+#	define VIA_EEPROM_LAYOUT_OPTIONS_SIZE 1
+#endif
+
+// The end of the EEPROM memory used by VIA
+// By default, dynamic keymaps will start at the byte after this.
+#define VIA_EEPROM_ADDR_END (VIA_EEPROM_LAYOUT_OPTIONS_ADDR+VIA_EEPROM_LAYOUT_OPTIONS_SIZE-1)
+
 // This is changed only when the command IDs change,
 // so VIA Configurator can detect compatible firmware. 
 #define VIA_PROTOCOL_VERSION 0x0008
@@ -77,7 +90,7 @@ enum via_command_id
 enum via_keyboard_value_id
 {
   id_uptime = 0x01,
-  id_firmware_version
+  id_layout_options
 };
 
 // Can't use SAFE_RANGE here, it might change if someone adds
@@ -140,6 +153,10 @@ void via_eeprom_reset(void);
 
 // Called by QMK core to initialize dynamic keymaps etc.
 void via_init(void);
+
+// Used by VIA to store and retrieve the layout options.
+uint32_t via_get_layout_options(void);
+void via_set_layout_options(uint32_t value);
 
 // Called by QMK core to process VIA-specific keycodes.
 bool process_record_via(uint16_t keycode, keyrecord_t *record);
