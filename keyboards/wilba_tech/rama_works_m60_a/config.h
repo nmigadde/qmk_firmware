@@ -121,8 +121,8 @@
 // that doesn't store its own state to EEPROM.
 #define VIA_EEPROM_EXTRA_MAGIC 0x0000
 
-// Backlight config starts after VIA's EEPROM version
-#define RGB_BACKLIGHT_CONFIG_EEPROM_ADDR 37
+// Backlight config starts after VIA's EEPROM address end
+#define RGB_BACKLIGHT_CONFIG_EEPROM_ADDR (VIA_EEPROM_ADDR_END+1)
 
 // Dynamic keymap starts after backlight config (31 bytes)
 #define DYNAMIC_KEYMAP_EEPROM_ADDR (RGB_BACKLIGHT_CONFIG_EEPROM_ADDR+31)
