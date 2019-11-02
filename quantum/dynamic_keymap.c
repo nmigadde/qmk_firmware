@@ -31,10 +31,10 @@
 #endif
 
 // If DYNAMIC_KEYMAP_EEPROM_ADDR not explicitly defined in config.h,
-// default it start after VIA_EEPROM_ADDR_END
+// default it start after VIA_EEPROM_CUSTOM_ADDR+VIA_EEPROM_CUSTOM_SIZE
 #ifndef DYNAMIC_KEYMAP_EEPROM_ADDR
-#   ifdef VIA_EEPROM_ADDR_END
-#       define DYNAMIC_KEYMAP_EEPROM_ADDR (VIA_EEPROM_ADDR_END+1)
+#   ifdef VIA_EEPROM_CUSTOM_CONFIG_ADDR
+#       define DYNAMIC_KEYMAP_EEPROM_ADDR (VIA_EEPROM_CUSTOM_CONFIG_ADDR+VIA_EEPROM_CUSTOM_CONFIG_SIZE)
 #   else
 #       error DYNAMIC_KEYMAP_EEPROM_ADDR not defined
 #   endif 

@@ -64,19 +64,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #endif
 
-// Custom config starts after VIA's EEPROM address end
-
-#define EEPROM_ENABLED_ENCODER_MODES (VIA_EEPROM_ADDR_END+1)
-#define EEPROM_CUSTOM_BACKLIGHT (VIA_EEPROM_ADDR_END+2)
-#define EEPROM_DEFAULT_OLED (VIA_EEPROM_ADDR_END+3)
-#define EEPROM_CUSTOM_ENCODER (VIA_EEPROM_ADDR_END+4)
-
-// Dynamic keymap starts after custom config (3+18 bytes)
-// 1 for enabled encoder modes
-// 1 for custom backlighting controls
-// 1 for OLED default mode
-// 6 for 3x custom encoder settings, left, right, and press (18 total)
-#define DYNAMIC_KEYMAP_EEPROM_ADDR (EEPROM_ENABLED_ENCODER_MODES+21)
+// Custom config starts after VIA's EEPROM usage,
+// dynamic keymaps start after this.
+// Custom config Usage:
+// 1 for enabled encoder modes (1 byte)
+// 1 for custom backlighting controls (1 byte)
+// 1 for OLED default mode (1 byte)
+// 6 for 3x custom encoder settings, left, right, and press (18 bytes)
+#define VIA_EEPROM_CUSTOM_CONFIG_SIZE 21
 
 /*
  * Feature disable options

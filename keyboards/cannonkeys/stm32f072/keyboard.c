@@ -12,7 +12,7 @@
 #include "tmk_core/common/eeprom.h"
 
 #include "via.h"
-
+#define EEPROM_CUSTOM_BACKLIGHT (VIA_EEPROM_CUSTOM_CONFIG_ADDR)
 
 backlight_config_t kb_backlight_config = {
   .enable = true,

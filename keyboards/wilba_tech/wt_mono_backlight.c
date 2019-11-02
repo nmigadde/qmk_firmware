@@ -26,6 +26,9 @@
 #include "progmem.h"
 #include "quantum/color.h"
 
+#include "via.h" // uses only the EEPROM address
+#define MONO_BACKLIGHT_CONFIG_EEPROM_ADDR (VIA_EEPROM_CUSTOM_CONFIG_ADDR)
+
 #define ISSI_ADDR_DEFAULT 0x50
 
 #define BACKLIGHT_EFFECT_MAX 3

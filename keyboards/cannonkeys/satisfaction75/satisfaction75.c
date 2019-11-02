@@ -16,9 +16,6 @@
 #include "dynamic_keymap.h"
 #include "tmk_core/common/eeprom.h"
 
-#include "via.h"
-
-
 /* Artificial delay added to get media keys to work in the encoder*/
 #define MEDIA_KEY_DELAY 10
 

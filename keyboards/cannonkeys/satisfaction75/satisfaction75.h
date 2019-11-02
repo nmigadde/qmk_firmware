@@ -8,6 +8,12 @@
     #include "rev1.h"
 #endif
 
+#include "via.h" // only for EEPROM address
+#define EEPROM_ENABLED_ENCODER_MODES (VIA_EEPROM_CUSTOM_CONFIG_ADDR)
+#define EEPROM_CUSTOM_BACKLIGHT (VIA_EEPROM_CUSTOM_CONFIG_ADDR+1)
+#define EEPROM_DEFAULT_OLED (VIA_EEPROM_CUSTOM_CONFIG_ADDR+2)
+#define EEPROM_CUSTOM_ENCODER (VIA_EEPROM_CUSTOM_CONFIG_ADDR+3)
+
 /* screen off after this many milliseconds */
 #define ScreenOffInterval 60000 /* milliseconds */
 

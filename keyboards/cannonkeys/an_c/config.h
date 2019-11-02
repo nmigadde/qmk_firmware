@@ -58,11 +58,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PIN_WS2812      15
 #define WS2812_SPI SPID2
 
-// Backlight config starts after VIA's EEPROM address end
-#define EEPROM_CUSTOM_BACKLIGHT (VIA_EEPROM_ADDR_END+1)
-
-// Dynamic keymap starts after backlight config (1 byte)
-#define DYNAMIC_KEYMAP_EEPROM_ADDR (EEPROM_CUSTOM_BACKLIGHT+1)
+// Backlight config starts after VIA's EEPROM usage,
+// dynamic keymaps start after this.
+#define VIA_EEPROM_CUSTOM_CONFIG_SIZE 1
 
 /*
  * Feature disable options

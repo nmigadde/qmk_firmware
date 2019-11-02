@@ -46,6 +46,9 @@
 #include "progmem.h"
 #include "quantum/color.h"
 
+#include "via.h" // uses only the EEPROM address
+#define RGB_BACKLIGHT_CONFIG_EEPROM_ADDR (VIA_EEPROM_CUSTOM_CONFIG_ADDR)
+
 #if defined(RGB_BACKLIGHT_M6_B)
 #include "drivers/issi/is31fl3218.h"
 #define BACKLIGHT_LED_COUNT 6

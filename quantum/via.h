@@ -52,12 +52,17 @@
 // but this is something that should be set correctly on initial implementation.
 // 1 byte is enough for most uses (i.e. 8 binary states, or 6 binary + 1 ternary/quaternary )
 #ifndef VIA_EEPROM_LAYOUT_OPTIONS_SIZE
-#	define VIA_EEPROM_LAYOUT_OPTIONS_SIZE 1
+#   define VIA_EEPROM_LAYOUT_OPTIONS_SIZE 1
 #endif
 
 // The end of the EEPROM memory used by VIA
-// By default, dynamic keymaps will start at the byte after this.
-#define VIA_EEPROM_ADDR_END (VIA_EEPROM_LAYOUT_OPTIONS_ADDR+VIA_EEPROM_LAYOUT_OPTIONS_SIZE-1)
+// By default, dynamic keymaps will start at this if there is no
+// custom config
+#define VIA_EEPROM_CUSTOM_CONFIG_ADDR (VIA_EEPROM_LAYOUT_OPTIONS_ADDR+VIA_EEPROM_LAYOUT_OPTIONS_SIZE)
+
+#ifndef VIA_EEPROM_CUSTOM_CONFIG_SIZE
+#   define VIA_EEPROM_CUSTOM_CONFIG_SIZE 0
+#endif
 
 // This is changed only when the command IDs change,
 // so VIA Configurator can detect compatible firmware. 
@@ -65,26 +70,26 @@
 
 enum via_command_id
 {
-	id_get_protocol_version = 0x01, // always 0x01
-	id_get_keyboard_value,
-	id_set_keyboard_value,
-	id_dynamic_keymap_get_keycode,
-	id_dynamic_keymap_set_keycode,
-	id_dynamic_keymap_reset,
-	id_backlight_config_set_value,
-	id_backlight_config_get_value,
-	id_backlight_config_save,
-	id_eeprom_reset,
-	id_bootloader_jump,
-	id_dynamic_keymap_macro_get_count,
-	id_dynamic_keymap_macro_get_buffer_size,
-	id_dynamic_keymap_macro_get_buffer,
-	id_dynamic_keymap_macro_set_buffer,
-	id_dynamic_keymap_macro_reset,
-	id_dynamic_keymap_get_layer_count,
-	id_dynamic_keymap_get_buffer,
-	id_dynamic_keymap_set_buffer,
-	id_unhandled = 0xFF,
+    id_get_protocol_version = 0x01, // always 0x01
+    id_get_keyboard_value,
+    id_set_keyboard_value,
+    id_dynamic_keymap_get_keycode,
+    id_dynamic_keymap_set_keycode,
+    id_dynamic_keymap_reset,
+    id_backlight_config_set_value,
+    id_backlight_config_get_value,
+    id_backlight_config_save,
+    id_eeprom_reset,
+    id_bootloader_jump,
+    id_dynamic_keymap_macro_get_count,
+    id_dynamic_keymap_macro_get_buffer_size,
+    id_dynamic_keymap_macro_get_buffer,
+    id_dynamic_keymap_macro_set_buffer,
+    id_dynamic_keymap_macro_reset,
+    id_dynamic_keymap_get_layer_count,
+    id_dynamic_keymap_get_buffer,
+    id_dynamic_keymap_set_buffer,
+    id_unhandled = 0xFF,
 };
 
 enum via_keyboard_value_id
@@ -99,24 +104,24 @@ enum via_keyboard_value_id
 // TODO: merge this into quantum_keycodes
 // Backlight keycodes are in range 0x5F00-0x5F0F
 enum via_keycodes {
-	FN_MO13 = 0x5F10,
-	FN_MO23,
-	MACRO00,
-	MACRO01,
-	MACRO02,
-	MACRO03,
-	MACRO04,
-	MACRO05,
-	MACRO06,
-	MACRO07,
-	MACRO08,
-	MACRO09,
-	MACRO10,
-	MACRO11,
-	MACRO12,
-	MACRO13,
-	MACRO14,
-	MACRO15,
+    FN_MO13 = 0x5F10,
+    FN_MO23,
+    MACRO00,
+    MACRO01,
+    MACRO02,
+    MACRO03,
+    MACRO04,
+    MACRO05,
+    MACRO06,
+    MACRO07,
+    MACRO08,
+    MACRO09,
+    MACRO10,
+    MACRO11,
+    MACRO12,
+    MACRO13,
+    MACRO14,
+    MACRO15,
 };
 
 enum user_keycodes {
