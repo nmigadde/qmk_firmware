@@ -16,7 +16,6 @@ BOOTLOADER = atmel-dfu
 # backlight effects.
 OPT_DEFS += -DNO_SUSPEND_POWER_DOWN
 
-
 # Build Options
 #   change yes to no to disable
 #

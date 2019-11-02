@@ -4,11 +4,12 @@ Une fois votre clavier configuré avec un firmware custom, vous êtes prêt à l
 
 ## Tester
 
-Tester votre clavier est normalement assez simple. Appuyez chaque touche de votre clavier et assurez vous qu'il envoie les touches auquel vous vous attendiez. Il existe même des programmes qui vous aideront à vérifier qu'aucune touche ne soit oubliée.
+Tester votre clavier est normalement assez simple. Appuyez chaque touche de votre clavier et assurez-vous qu'il envoie les touches auquel vous vous attendiez. Il existe même des programmes qui vous aideront à vérifier qu'aucune touche ne soit oubliée.
 
 Note: ces programmes ne sont ni fournis ni approuvés par QMK.
 
-* [Switch Hitter](https://elitekeyboards.com/switchhitter.php) (Windows seulement)
+* [QMK Configurator](https://config.qmk.fm/#/test/) (Web)
+* [Switch Hitter](https://web.archive.org/web/20190413233743/https://elitekeyboards.com/switchhitter.php) (Windows seulement)
 * [Keyboard Viewer](https://www.imore.com/how-use-keyboard-viewer-your-mac) (Mac seulement)
 * [Keyboard Tester](http://www.keyboardtester.com) (Web)
 * [Keyboard Checker](http://keyboardchecker.com) (Web)
@@ -29,7 +30,7 @@ void keyboard_post_init_user(void) {
 
 ### Débuguer avec QMK Toolbox
 
-Pour les plateformes compatibles, [QMK Toolbox](https://github.com/qmk/qmk_toolbox) peut être utilisé pour afficher les message de débugage pour votre clavier.
+Pour les plateformes compatibles, [QMK Toolbox](https://github.com/qmk/qmk_toolbox) peut être utilisé pour afficher les messages de débugage pour votre clavier.
 
 ### Débuguer avec hid_listen
 
@@ -46,9 +47,9 @@ Parfois, il est utile d'afficher des messages de débugage depuis votre [code cu
 Une fois fait, vous pouvez utiliser les fonctions print suivantes:
 
 * `print("string")`: Affiche une simple chaîne de caractères.
-* `uprintf("%s string", var)`: Affiche une chaîne de caractères formattée.
+* `uprintf("%s string", var)`: Affiche une chaîne de caractères formatée.
 * `dprint("string")` Affiche une chaîne de caractère simple, mais uniquement lorsque le mode debug est activé.
-* `dprintf("%s string", var)`: Affiche une chaîne de caractère formattée, mais uniquement lorsque le mode debug est activé.
+* `dprintf("%s string", var)`: Affiche une chaîne de caractère formatée, mais uniquement lorsque le mode debug est activé.
 
 ## Exemples de debugage
 
