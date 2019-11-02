@@ -64,41 +64,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #endif
 
+// Custom config starts after VIA's EEPROM address end
 
-#define DYNAMIC_KEYMAP_LAYER_COUNT 4
+#define EEPROM_ENABLED_ENCODER_MODES (VIA_EEPROM_ADDR_END+1)
+#define EEPROM_CUSTOM_BACKLIGHT (VIA_EEPROM_ADDR_END+2)
+#define EEPROM_DEFAULT_OLED (VIA_EEPROM_ADDR_END+3)
+#define EEPROM_CUSTOM_ENCODER (VIA_EEPROM_ADDR_END+4)
 
-// EEPROM usage
-
-// TODO: refactor with new user EEPROM code (coming soon)
-#define EEPROM_MAGIC 0x451F
-#define EEPROM_MAGIC_ADDR 40
-// Bump this every time we change what we store
-// This will automatically reset the EEPROM with defaults
-// and avoid loading invalid data from the EEPROM
-#define EEPROM_VERSION 0x01
-#define EEPROM_VERSION_ADDR 42
-
-// Dynamic keymap starts after EEPROM version
-#define DYNAMIC_KEYMAP_EEPROM_ADDR 43
-
-// Dynamic macro starts after dynamic keymaps (35+(4*6*16*2)) = (35+768) = 803
-
-// I'm also putting my custom stuff after that
+// Dynamic keymap starts after custom config (3+18 bytes)
 // 1 for enabled encoder modes
 // 1 for custom backlighting controls
 // 1 for OLED default mode
 // 6 for 3x custom encoder settings, left, right, and press (18 total)
-
-#define DYNAMIC_KEYMAP_ENABLED_ENCODER_MODES 811
-#define DYNAMIC_KEYMAP_CUSTOM_BACKLIGHT 812
-#define DYNAMIC_KEYMAP_DEFAULT_OLED 813
-#define DYNAMIC_KEYMAP_CUSTOM_ENCODER 814
-
-#define DYNAMIC_KEYMAP_MACRO_EEPROM_ADDR 832
-#define DYNAMIC_KEYMAP_MACRO_EEPROM_SIZE 192
-#define DYNAMIC_KEYMAP_MACRO_COUNT 16
-
-
+#define DYNAMIC_KEYMAP_EEPROM_ADDR (EEPROM_ENABLED_ENCODER_MODES+21)
 
 /*
  * Feature disable options

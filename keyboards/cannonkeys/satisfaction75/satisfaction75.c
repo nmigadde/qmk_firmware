@@ -59,17 +59,17 @@ backlight_config_t kb_backlight_config = {
 #ifdef VIA_ENABLE
 void raw_hid_receive_kb( uint8_t *data, uint8_t length )
 {
-	uint8_t *command_id = &(data[0]);
-	uint8_t *command_data = &(data[1]);
-	switch ( *command_id )
-	{
-		case id_get_keyboard_value:
-		{
+  uint8_t *command_id = &(data[0]);
+  uint8_t *command_data = &(data[1]);
+  switch ( *command_id )
+  {
+    case id_get_keyboard_value:
+    {
             switch( command_data[0])
             {
                 case id_oled_default_mode:
                 {
-                    uint8_t default_oled = eeprom_read_byte((uint8_t*)DYNAMIC_KEYMAP_DEFAULT_OLED);
+                    uint8_t default_oled = eeprom_read_byte((uint8_t*)EEPROM_DEFAULT_OLED);
                     command_data[1] = default_oled;
                     break;
                 }
@@ -103,14 +103,14 @@ void raw_hid_receive_kb( uint8_t *data, uint8_t length )
                     break;
                 }
             }
-			break;
+      break;
     }
     case id_set_keyboard_value:
     {
       switch(command_data[0]){
         case id_oled_default_mode:
         {
-          eeprom_update_byte((uint8_t*)DYNAMIC_KEYMAP_DEFAULT_OLED, command_data[1]);
+          eeprom_update_byte((uint8_t*)EEPROM_DEFAULT_OLED, command_data[1]);
           break;
         }
         case id_oled_mode:
@@ -122,7 +122,7 @@ void raw_hid_receive_kb( uint8_t *data, uint8_t length )
         case id_encoder_modes:
         {
           enabled_encoder_modes = command_data[1];
-          eeprom_update_byte((uint8_t*)DYNAMIC_KEYMAP_ENABLED_ENCODER_MODES, enabled_encoder_modes);
+          eeprom_update_byte((uint8_t*)EEPROM_ENABLED_ENCODER_MODES, enabled_encoder_modes);
           break;
         }
         case id_encoder_custom:
@@ -141,14 +141,14 @@ void raw_hid_receive_kb( uint8_t *data, uint8_t length )
       }
       break;
     }
-		default:
-		{
-			// Unhandled message.
-			*command_id = id_unhandled;
-			break;
-		}
-	}
-	// DO NOT call raw_hid_send(data,length) here, let caller do this
+    default:
+    {
+      // Unhandled message.
+      *command_id = id_unhandled;
+      break;
+    }
+  }
+  // DO NOT call raw_hid_send(data,length) here, let caller do this
 }
 #endif
 
@@ -261,25 +261,25 @@ void encoder_update_kb(uint8_t index, bool clockwise) {
   }
 }
 
-void dynamic_keymap_custom_reset(void){
-  void *p = (void*)(DYNAMIC_KEYMAP_CUSTOM_BACKLIGHT);
-	void *end = (void*)(DYNAMIC_KEYMAP_MACRO_EEPROM_ADDR);
-	while ( p != end ) {
-		eeprom_update_byte(p, 0);
-		++p;
-	}
-  eeprom_update_byte((uint8_t*)DYNAMIC_KEYMAP_ENABLED_ENCODER_MODES, 0x1F);
+void custom_config_reset(void){
+  void *p = (void*)(EEPROM_CUSTOM_BACKLIGHT);
+  void *end = (void*)(DYNAMIC_KEYMAP_EEPROM_ADDR);
+  while ( p != end ) {
+    eeprom_update_byte(p, 0);
+    ++p;
+  }
+  eeprom_update_byte((uint8_t*)EEPROM_ENABLED_ENCODER_MODES, 0x1F);
 }
 
-void save_backlight_config_to_eeprom(){
-  eeprom_update_byte((uint8_t*)DYNAMIC_KEYMAP_CUSTOM_BACKLIGHT, kb_backlight_config.raw);
+void backlight_config_save(){
+  eeprom_update_byte((uint8_t*)EEPROM_CUSTOM_BACKLIGHT, kb_backlight_config.raw);
 }
 
-void load_custom_config(){
-  kb_backlight_config.raw = eeprom_read_byte((uint8_t*)DYNAMIC_KEYMAP_CUSTOM_BACKLIGHT);
+void custom_config_load(){
+  kb_backlight_config.raw = eeprom_read_byte((uint8_t*)EEPROM_CUSTOM_BACKLIGHT);
 #ifdef DYNAMIC_KEYMAP_ENABLE
-  oled_mode = eeprom_read_byte((uint8_t*)DYNAMIC_KEYMAP_DEFAULT_OLED);
-  enabled_encoder_modes = eeprom_read_byte((uint8_t*)DYNAMIC_KEYMAP_ENABLED_ENCODER_MODES);
+  oled_mode = eeprom_read_byte((uint8_t*)EEPROM_DEFAULT_OLED);
+  enabled_encoder_modes = eeprom_read_byte((uint8_t*)EEPROM_ENABLED_ENCODER_MODES);
 #endif
 }
 
@@ -287,30 +287,30 @@ void load_custom_config(){
 // Called from matrix_init_kb() if not VIA_ENABLE
 void via_init_kb(void)
 {
-	// If the EEPROM has the magic, the data is good.
-	// OK to load from EEPROM.
-	if (via_eeprom_is_valid()) {
-		load_custom_config();
-	} else	{
+  // If the EEPROM has the magic, the data is good.
+  // OK to load from EEPROM.
+  if (via_eeprom_is_valid()) {
+    custom_config_load();
+  } else	{
 #ifdef DYNAMIC_KEYMAP_ENABLE
     // Reset the custom stuff
-    dynamic_keymap_custom_reset();
+    custom_config_reset();
 #endif
-		// DO NOT set EEPROM valid here, let caller do this
-	}
+    // DO NOT set EEPROM valid here, let caller do this
+  }
 }
 
 void matrix_init_kb(void)
 {
 #ifndef VIA_ENABLE
-	via_init_kb();
-	via_eeprom_set_valid(true);
+  via_init_kb();
+  via_eeprom_set_valid(true);
 #endif // VIA_ENABLE
 
   rtcGetTime(&RTCD1, &last_timespec);
   queue_for_send = true;
   backlight_init_ports();
-	matrix_init_user();
+  matrix_init_user();
 }
 
 
@@ -353,22 +353,22 @@ void matrix_scan_kb(void) {
 
 bool via_eeprom_is_valid(void)
 {
-	return (eeprom_read_word(((void*)VIA_EEPROM_MAGIC_ADDR)) == VIA_EEPROM_MAGIC &&
-			eeprom_read_byte(((void*)VIA_EEPROM_VERSION_ADDR)) == VIA_EEPROM_VERSION);
+  return (eeprom_read_word(((void*)VIA_EEPROM_MAGIC_ADDR)) == VIA_EEPROM_MAGIC &&
+      eeprom_read_byte(((void*)VIA_EEPROM_VERSION_ADDR)) == VIA_EEPROM_VERSION);
 }
 
 void via_eeprom_set_valid(bool valid)
 {
-	eeprom_update_word(((void*)VIA_EEPROM_MAGIC_ADDR), valid ? VIA_EEPROM_MAGIC : 0xFFFF);
-	eeprom_update_byte(((void*)VIA_EEPROM_VERSION_ADDR), valid ? VIA_EEPROM_VERSION : 0xFF);
+  eeprom_update_word(((void*)VIA_EEPROM_MAGIC_ADDR), valid ? VIA_EEPROM_MAGIC : 0xFFFF);
+  eeprom_update_byte(((void*)VIA_EEPROM_VERSION_ADDR), valid ? VIA_EEPROM_VERSION : 0xFF);
 }
 
 void via_eeprom_reset(void)
 {
-	// Set the VIA specific EEPROM state as invalid.
-	via_eeprom_set_valid(false);
-	// Set the TMK/QMK EEPROM state as invalid.
-	eeconfig_disable();
+  // Set the VIA specific EEPROM state as invalid.
+  via_eeprom_set_valid(false);
+  // Set the TMK/QMK EEPROM state as invalid.
+  eeconfig_disable();
 }
 
 #endif // VIA_ENABLE
