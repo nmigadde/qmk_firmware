@@ -259,8 +259,8 @@ void encoder_update_kb(uint8_t index, bool clockwise) {
 }
 
 void custom_config_reset(void){
-  void *p = (void*)(EEPROM_CUSTOM_BACKLIGHT);
-  void *end = (void*)(DYNAMIC_KEYMAP_EEPROM_ADDR);
+  void *p = (void*)(VIA_EEPROM_CUSTOM_CONFIG_ADDR);
+  void *end = (void*)(VIA_EEPROM_CUSTOM_CONFIG_ADDR+VIA_EEPROM_CUSTOM_CONFIG_SIZE);
   while ( p != end ) {
     eeprom_update_byte(p, 0);
     ++p;
