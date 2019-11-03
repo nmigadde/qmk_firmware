@@ -20,24 +20,6 @@ backlight_config_t kb_backlight_config = {
   .level = BACKLIGHT_LEVELS
 };
 
-bool eeprom_is_valid(void)
-{
-	return (eeprom_read_word(((void*)EEPROM_MAGIC_ADDR)) == EEPROM_MAGIC &&
-			eeprom_read_byte(((void*)EEPROM_VERSION_ADDR)) == EEPROM_VERSION);
-}
-
-void eeprom_set_valid(bool valid)
-{
-	eeprom_update_word(((void*)EEPROM_MAGIC_ADDR), valid ? EEPROM_MAGIC : 0xFFFF);
-	eeprom_update_byte(((void*)EEPROM_VERSION_ADDR), valid ? EEPROM_VERSION : 0xFF);
-}
-
-void eeprom_reset(void)
-{
-	eeprom_set_valid(false);
-	eeconfig_disable();
-}
-
 void backlight_config_save(){
   eeprom_update_byte((uint8_t*)EEPROM_CUSTOM_BACKLIGHT, kb_backlight_config.raw);
 }
